@@ -27,7 +27,7 @@ graph TD
     end
 
     subgraph DB [Database Tier]
-        SQLite[(SQLite Database: dev.db)]
+        Postgres[(Postgres Database)]
     end
 
     %% Client Interactions
@@ -35,7 +35,7 @@ graph TD
     Uploader -->|POST /api/meetings| MeetRouter
     UI -->|Toggle Checkbox| MeetRouter
     MeetRouter -->|Update DB| Prisma
-    Prisma -->|Sync Status| SQLite
+    Prisma -->|Sync Status| Postgres
 
     %% Backend Pipeline Flow
     MeetRouter -->|Upload File| Cloudinary
@@ -82,7 +82,7 @@ Minutely/
 │   │   ├── models.py            # Pydantic schema validation
 │   │   └── main.py              # FastAPI application entrypoint
 │   ├── prisma/
-│   │   └── schema.prisma        # Prisma SQLite database models
+│   │   └── schema.prisma        # Prisma Postgres database models
 │   └── requirements.txt         # Backend python packages
 ├── frontend/
 │   ├── public/
@@ -110,7 +110,7 @@ Minutely/
 
 - **Frontend Client**: React (Vite, JavaScript, CSS3)
 - **Backend API**: FastAPI (Python)
-- **Database**: Prisma ORM (SQLite database file `dev.db`)
+- **Database**: Prisma ORM (Postgres, configured via `DATABASE_URL`)
 - **Speech Ingestion**: Groq Cloud API (`whisper-large-v3` ASR)
 - **Inference Model**: Groq Cloud API (`groq/compound` LLM)
 - **File Storage**: Cloudinary SDK (with local disk fallback)
@@ -152,7 +152,7 @@ python run.py
 ```
 
 The script will:
-1. Automatically run `prisma db push` to initialize the SQLite database file and generate the python prisma client library if not present.
+1. Automatically run `prisma generate` and `prisma db push` to build the python prisma client library and sync the schema to the Postgres database in `DATABASE_URL`.
 2. Search for and terminate any previous processes holding ports `8000` or `5173`.
 3. Start the FastAPI backend server on `http://127.0.0.1:8000`.
 4. Start the Vite React development server on `http://localhost:5173`.

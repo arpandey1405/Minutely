@@ -55,7 +55,7 @@ yarn-error.log*
 .parcel-cache
 
 # -----------------------------------------------------------------------------
-# SQLite Database & Prisma exclusions
+# Legacy SQLite database files (the project now uses Postgres)
 # -----------------------------------------------------------------------------
 backend/prisma/dev.db
 backend/prisma/dev.db-journal

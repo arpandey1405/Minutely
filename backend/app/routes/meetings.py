@@ -13,7 +13,7 @@ router = APIRouter(prefix="/api/meetings", tags=["Meetings"])
 
 async def process_meeting_pipeline(meeting_id: str, audio_path: str, custom_api_key: Optional[str] = None):
     """
-    Background worker pipeline: Transcribe audio -> Summarize transcript -> Populate SQLite db tables.
+    Background worker pipeline: Transcribe audio -> Summarize transcript -> Populate db tables.
     """
     try:
         # 1. Update status to transcribing

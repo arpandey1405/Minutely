@@ -27,8 +27,8 @@ Minutely follows a modular multi-tier architecture:
          Local File system |                 | Prisma ORM
                            v                 v
             +--------------+---+    +--------+--------+
-            |  backend/uploads |    |   SQLite db     |
-            |  (Local Storage) |    |   (dev.db)      |
+            |  backend/uploads |    |   Postgres db   |
+            |  (Local Storage) |    |  (DATABASE_URL) |
             +------------------+    +-----------------+
                                              |
                          External API Integrations (HTTPS)
@@ -49,7 +49,7 @@ Minutely follows a modular multi-tier architecture:
 When a user uploads a meeting recording, the process operates **asynchronously** to prevent locking the HTTP connection. The request immediately returns a status of `uploaded` and processes the file in the background:
 
 ```
-[React Client]          [FastAPI Endpoint]       [Storage Service]       [Groq Whisper]       [Groq LLM]        [SQLite (Prisma)]
+[React Client]          [FastAPI Endpoint]       [Storage Service]       [Groq Whisper]       [Groq LLM]        [Postgres (Prisma)]
       |                          |                       |                      |                  |                    |
       |-- POST /upload --------->|                       |                      |                  |                    |
       |   (Audio File)           |-- Ingest local/cloud->|                      |                  |                    |
@@ -85,7 +85,7 @@ When a user uploads a meeting recording, the process operates **asynchronously**
 
 ### A. Asynchronous Task Execution (FastAPI `BackgroundTasks`)
 Rather than forcing the client to wait for translation APIs (which can take 10–20 seconds), FastAPI uses standard python `BackgroundTasks`. 
-* The backend saves the file, commits a pending `Meeting` entry to SQLite with status `uploaded`, and returns immediately.
+* The backend saves the file, commits a pending `Meeting` entry to Postgres with status `uploaded`, and returns immediately.
 * A background thread handles the slow external network calls sequentially: `Upload (Cloudinary) -> Transcribe (Groq Whisper) -> Summarize (Groq LLM)`.
 * If any step fails, the meeting status in the DB is set to `failed`, which is picked up by the client during polling.
 

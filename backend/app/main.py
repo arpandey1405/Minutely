@@ -9,7 +9,7 @@ from app.routes import auth_routes, meetings
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Connect to SQLite DB via Prisma
+    # Startup: Connect to Postgres via Prisma
     await connect_db()
     # Ensure upload directory exists
     config.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)

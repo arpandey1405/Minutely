@@ -85,7 +85,7 @@ export default function LandingPage({ onGetStarted }) {
               <span>📋</span> Action Checklist
             </div>
             <div className="card-desc">
-              Checklist ready. Tasks mapped to owners and synced with Prisma SQLite database.
+              Checklist ready. Tasks mapped to owners and synced with the Prisma database.
             </div>
           </div>
         </div>
@@ -216,7 +216,7 @@ export default function LandingPage({ onGetStarted }) {
             </div>
             {activeAccordion === 'momentum' && (
               <p className="accordion-content">
-                Check off completed items inside your workspace. The state updates in the SQLite database via Prisma ORM instantly, and you can export summary reports.
+                Check off completed items inside your workspace. The state updates in the database via Prisma ORM instantly, and you can export summary reports.
               </p>
             )}
           </div>

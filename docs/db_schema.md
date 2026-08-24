@@ -1,6 +1,6 @@
 # Database Schema Documentation
 
-Minutely uses an **SQLite** database (`dev.db`) managed via **Prisma ORM**. Below is the relational structure, constraints, and data definitions.
+Minutely uses a **Postgres** database (configured via `DATABASE_URL`) managed via **Prisma ORM**. Below is the relational structure, constraints, and data definitions.
 
 ---
 

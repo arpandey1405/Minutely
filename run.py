@@ -55,34 +55,11 @@ def main():
     free_port(5173)
 
     
-    # 1. Check/initialize Prisma DB
-    db_file = backend_dir / "prisma" / "dev.db"
-    
-    if not db_file.exists():
-        print("[*] SQLite dev.db not detected. Running database migrations...")
-        try:
-            # Run prisma db push via python module
-            subprocess.run(
-                [sys.executable, "-m", "prisma", "db", "push", f"--schema={backend_dir / 'prisma' / 'schema.prisma'}"],
-                check=True,
-                cwd=backend_dir
-            )
-            print("[+] Database successfully initialized.")
-        except subprocess.CalledProcessError as e:
-            print(f"[!] Database migration failed: {e}")
-            print("[!] Please check if Prisma is installed correctly or run 'prisma db push --schema=backend/prisma/schema.prisma' manually.")
-    else:
-        print("[+] Prisma SQLite database dev.db detected.")
-        # Make sure Prisma client is generated
-        try:
-            subprocess.run(
-                [sys.executable, "-m", "prisma", "generate", f"--schema={backend_dir / 'prisma' / 'schema.prisma'}"],
-                check=True,
-                cwd=backend_dir,
-                stdout=subprocess.DEVNULL
-            )
-        except Exception:
-            pass
+    # 1. Generate the Prisma client and sync the schema with Postgres
+    print("[*] Preparing database (Prisma generate + schema sync)...")
+    if subprocess.run([sys.executable, "build_db.py"], cwd=backend_dir).returncode != 0:
+        print("[!] Database preparation failed. Check DATABASE_URL in your .env file.")
+        sys.exit(1)
 
     # Ensure uploads directory exists
     uploads_dir = backend_dir / "uploads"

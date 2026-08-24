@@ -1,0 +1,34 @@
+databases:
+  - name: minutely-db
+    databaseName: minutely
+    plan: free
+
+services:
+  - type: web
+    name: minutely-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python build_db.py
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: minutely-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: 3.12.2
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false

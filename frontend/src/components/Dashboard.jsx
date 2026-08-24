@@ -554,7 +554,7 @@ export default function Dashboard({ token, user, apiBaseUrl, onLogout }) {
                   {activeTab === 'checklist' && (
                     <div className="report-card">
                       <h3 style={{ fontWeight: 800, color: '#022c22', marginBottom: '6px', fontSize: '1.05rem' }}>Checklist Tasks</h3>
-                      <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '20px' }}>Select completed tasks to sync updates directly with the SQLite database.</p>
+                      <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '20px' }}>Select completed tasks to sync updates directly with the database.</p>
                       
                       {activeMeeting.actionItems?.length === 0 ? (
                         <p style={{ color: '#9ca3af', fontStyle: 'italic', fontSize: '0.9rem' }}>No checklist items parsed from this recording.</p>
