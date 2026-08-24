@@ -1,0 +1,67 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider             = "prisma-client-py"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  avatarUrl String?
+  password  String?  // Hashed password for email/password auth
+  googleId  String?  @unique // Google identifier for OAuth
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  meetings  Meeting[]
+}
+
+model Meeting {
+  id          String   @id @default(uuid())
+  userId      String
+  title       String
+  audioUrl    String?  // Cloudinary URL or Local Path
+  status      String   // "uploaded", "transcribing", "summarizing", "done", "failed"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transcript  Transcript?
+  summary     Summary?
+  actionItems ActionItem[]
+}
+
+model Transcript {
+  id        String   @id @default(uuid())
+  meetingId String   @unique
+  text      String
+  createdAt DateTime @default(now())
+  
+  meeting   Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+}
+
+model Summary {
+  id          String   @id @default(uuid())
+  meetingId   String   @unique
+  summaryText String
+  decisions   String   // JSON string of decisions array
+  createdAt   DateTime @default(now())
+  
+  meeting     Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+}
+
+model ActionItem {
+  id          String   @id @default(uuid())
+  meetingId   String
+  task        String
+  owner       String?
+  dueDate     String?
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  
+  meeting     Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+}

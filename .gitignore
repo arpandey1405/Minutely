@@ -1,0 +1,73 @@
+# -----------------------------------------------------------------------------
+# OS metadata files
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# -----------------------------------------------------------------------------
+# Secrets and Credentials (CRITICAL - DO NOT COMMIT TO GITHUB)
+# -----------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# -----------------------------------------------------------------------------
+# Python / FastAPI Backend exclusions
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+ENV/
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# -----------------------------------------------------------------------------
+# Node / Vite React Frontend exclusions
+# -----------------------------------------------------------------------------
+node_modules/
+frontend/node_modules/
+/dist
+/frontend/dist
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+.parcel-cache
+
+# -----------------------------------------------------------------------------
+# SQLite Database & Prisma exclusions
+# -----------------------------------------------------------------------------
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+db.sqlite3
+
+# -----------------------------------------------------------------------------
+# Editor / IDE configuration directories
+# -----------------------------------------------------------------------------
+.vscode/
+.idea/
+*.suo
+*.sln
+*.user
+*.userosscache
+*.sln.docstates
