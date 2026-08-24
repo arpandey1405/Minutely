@@ -55,6 +55,11 @@ yarn-error.log*
 .parcel-cache
 
 # -----------------------------------------------------------------------------
+# Prisma query engine binary (downloaded per-platform at build time)
+# -----------------------------------------------------------------------------
+backend/prisma-query-engine-*
+
+# -----------------------------------------------------------------------------
 # Legacy SQLite database files (the project now uses Postgres)
 # -----------------------------------------------------------------------------
 backend/prisma/dev.db

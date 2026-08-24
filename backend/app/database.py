@@ -1,10 +1,10 @@
-import subprocess
-import sys
-
 # Imported for its side effect of loading the root .env, so DATABASE_URL is in
 # the environment before the query engine resolves the datasource.
 from app import config  # noqa: F401
+from app.prisma_engine import ensure_local_engine, use_local_engine
 from prisma import Prisma
+
+use_local_engine()
 
 # Global prisma client instance
 db = Prisma(auto_register=True)
@@ -16,10 +16,11 @@ async def connect_db():
     try:
         await db.connect()
     except Exception as e:
-        # Hosts like Render run the app in a fresh container that may not carry
-        # over the query engine downloaded at build time, so fetch it and retry.
+        # The engine should have been bundled at build time; if the deploy
+        # predates that step, pull it down once rather than failing to boot.
         print(f"[!] Prisma connect failed ({e}). Fetching query engine and retrying...", flush=True)
-        subprocess.run([sys.executable, "-m", "prisma", "py", "fetch"], check=True)
+        ensure_local_engine()
+        use_local_engine()
         await db.connect()
 
 async def disconnect_db():
